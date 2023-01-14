@@ -4,9 +4,144 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <title>Finance Calculator</title>
 </head>
 <body>
-    
+    <div class="center">
+        <div id="inputBal">
+            <label for="text">Name:</label>
+            <input type="text" name="text" placeholder="Name" id="text"><br>
+            <label for="cost">Cost:</label>
+            <input type="number" name="cost" placeholder="Cost" id="cost">
+            <button onclick="Compare()">Add</button>
+            <select id="cUnit" name="country">
+                <option value="$">USA Dollar ($)</option>
+                <option value="TL">Turkish Lira (TL)</option>
+                <option value="BGN">Bulgarian Leva (BGN)</option>
+                <option value="DEN">Macedonian Denar (DEN)</option>
+                <option value="€">European Euro (€)</option>
+                <option value="£">English Pound (£)</option>
+              </select>
+        </div>
+        <div id="infoBal">
+            <h1 class="bal x2" id="bal">Balance: 0</h1>
+            <table id="incomeInfo">
+                <tr>
+                    <th class="income" colspan="2" id="inc">Income: </th>
+                </tr>
+                <tr>
+                    <th class="any">Name</th>
+                    <th class="any">Cost</th>
+                </tr>
+            </table>
+            <table id="expenseInfo">
+                <tr>
+                    <th class="expense" colspan="2" id="expen">Expense: </th>
+                </tr>
+                <tr>
+                    <th class="any">Name</th>
+                    <th class="any">Cost</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+<script>
+let bal = 0;
+let income = 0;
+let expense = 0;
+function Compare() {
+    let name = document.getElementById("text").value
+    let cost = document.getElementById("cost").value
+    let cUnit = document.getElementById("cUnit").value
+    let cost2 = Number(cost)
+
+    if (cost2 == 0) {
+        setTimeout(() => {
+        document.getElementById("text").value = "";
+        document.getElementById("cost").value = "";
+        }, 300);
+    } else if (cost2 > 0) {
+        setTimeout(() => {
+        document.getElementById("text").value = "";
+        document.getElementById("cost").value = "";
+        }, 300);
+        income+=cost2;
+        bal+=cost2;
+        CreateInc();
+    } else {
+        setTimeout(() => {
+        document.getElementById("text").value = "";
+        document.getElementById("cost").value = "";
+        }, 300);
+        expense+=cost2;
+        bal+=cost2;
+        CreateExpen();
+    }
+}
+function CreateInc() {
+    let name = document.getElementById("text").value
+    let cost = document.getElementById("cost").value
+    let cUnit = document.getElementById("cUnit").value
+    let cost2 = Number(cost)
+
+    const tr = document.createElement("tr");
+    const textth = document.createElement("th");
+    const costth = document.createElement("th");
+    tr.addEventListener("click", function(){
+        this.remove();
+        bal-=cost2;
+        income-=cost2;
+    })
+    textth.innerHTML = name;
+    costth.innerHTML = "+"+cost2+" "+cUnit;
+    textth.className = "inc";
+    costth.className = "inc";
+    tr.appendChild(textth);
+    tr.appendChild(costth);
+    document.getElementById("incomeInfo").appendChild(tr);
+}
+function CreateExpen() {
+    let name = document.getElementById("text").value
+    let cost = document.getElementById("cost").value
+    let cUnit = document.getElementById("cUnit").value
+    let cost2 = Number(cost)
+
+    const tr = document.createElement("tr");
+    const textth = document.createElement("th");
+    const costth = document.createElement("th");
+    tr.addEventListener("click", function(){
+        this.remove();
+        bal-=cost2
+        expense-=cost2
+    })
+    textth.innerHTML = name;
+    costth.innerHTML = cost2+" "+cUnit;
+    textth.className = "expen";
+    costth.className = "expen";
+    tr.appendChild(textth);
+    tr.appendChild(costth);
+    document.getElementById("expenseInfo").appendChild(tr);
+}
+
+function delSelf(cost3) {
+    bal+=cost3
+    this.remove();
+    if (cost3>0) {
+        income-=cost3
+    } else {
+        expense+=cost3
+    }
+}
+
+setInterval(() => {
+    let cUnit = document.getElementById("cUnit").value
+
+    document.getElementById("bal").innerHTML = "Balance: "+bal+" "+cUnit;
+    document.getElementById("inc").innerHTML = "Income: +"+income+" "+cUnit;
+    document.getElementById("expen").innerHTML = "Expense: "+expense+" "+cUnit;
+
+}, 500);
+</script>
 </body>
 </html>
